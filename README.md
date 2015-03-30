@@ -12,4 +12,6 @@ To continuously watch the coffeescript files and compile them on the fly use:
 
 Launch
 ------
-Run the app with ```node app.js```. Now you can open http://localhost:3000 in your browser.
+Run the app with ```node app.js```. Now you can open ```http://localhost:3000``` in your browser.
+
+See the animations in action [here](http://canvas-experiments.herokuapp.com/MST.html "Canvas Animations")
