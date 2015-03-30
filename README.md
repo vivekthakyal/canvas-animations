@@ -14,4 +14,4 @@ Launch
 ------
 Run the app with ```node app.js```. Now you can open ```http://localhost:3000``` in your browser.
 
-See the animations in action [here](http://canvas-experiments.herokuapp.com/MST.html "Canvas Animations")
+See the animations in action [here](http://canvas-experiments.herokuapp.com "Canvas Animations")
