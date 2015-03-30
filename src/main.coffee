@@ -9,9 +9,9 @@ $( ->
     ctx = canvas.getContext('2d')
     anim = new ParaboliodAnimation(new Point(canvas.width, canvas.height), 50000, ctx)
     points = []
-    for y in [0..canvas.height] by 60
-      for x in [0..canvas.width] by 60
-        points.push(new Point(x + ((y / 60) % 2) * 30, y, randomColor()))
+    for y in [0..canvas.height] by 50
+      for x in [0..canvas.width] by 50
+        points.push(new Point(x + ((y / 50) % 2) * 25, y, randomColor()))
 
     anim.drawPoints(points)
 

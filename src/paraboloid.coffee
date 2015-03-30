@@ -16,7 +16,7 @@ class @ParaboliodAnimation
       @ctx.strokeStyle = '#FFFFFF'
       @ctx.beginPath()
       @ctx.moveTo(point.x, point.y)
-      r = @scaledRadius(point.x, point.y, 30)
+      r = @scaledRadius(point.x, point.y, 25)
       r = 0 if r < 0
       @ctx.arc(point.x, point.y, r, 0, 2 * Math.PI)
       # @ctx.stroke()
