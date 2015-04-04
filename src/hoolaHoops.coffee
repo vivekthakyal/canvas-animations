@@ -14,14 +14,14 @@ class @Hoop
 
 class @HoolaHoops
   constructor: (id, numHoops) ->
-    canvas = document.getElementById(id)
-    canvas.width = canvas.height = canvas.clientWidth
-    @ctx = canvas.getContext('2d')
-    @center = new Point(canvas.width / 2, canvas.height / 2)
+    @canvas = document.getElementById(id)
+    @canvas.width = @canvas.height = @canvas.clientWidth
+    @ctx = @canvas.getContext('2d')
+    @center = new Point(@canvas.width / 2, @canvas.height / 2)
     @hoops = []
     @lastFrame = new Date().getTime()
     for i in [1..numHoops]
-      r = rand(10, canvas.width * 0.4)
+      r = rand(10, @canvas.width * 0.4)
       @hoops.push(new Hoop(r, new Circle(@center, rand(r / 4, r / 2)), rand(0, 2 * Math.PI), rand(0.001, 0.007)))
     @hoops.sort (a, b) -> b.radius - a.radius
 
@@ -30,8 +30,21 @@ class @HoolaHoops
       offset = $(this).offset()
       x = e.pageX - offset.left
       y = e.pageY - offset.top
-      self.center.x = x
-      self.center.y = y
+      self.movecenter(self.center, new Point(x, y), new Date().getTime(), 300)
+    )
+    $('#' + id).mouseleave((e) =>
+      @movecenter(@center, new Point(@canvas.width / 2, @canvas.height / 2), new Date().getTime(), 300)
+    )
+
+  movecenter: (startPoint, endPoint, startTime, duration) ->
+    t = new Date().getTime() - startTime
+    return if t >= duration
+    t /= duration
+    t = Easing.easeInOutCubic(t)
+    @center.x = startPoint.x + t * (endPoint.x - startPoint.x )
+    @center.y = startPoint.y + t * (endPoint.y - startPoint.y )
+    requestAnimationFrame(() =>
+      @movecenter(startPoint, endPoint, startTime, duration)
     )
 
   draw: () ->

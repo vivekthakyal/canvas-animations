@@ -1,6 +1,8 @@
 class @Point
   constructor: (@x, @y, @color) ->
 
+  toString: () -> "#{ @x }, #{ @y }"
+
 class @ParaboliodAnimation
   constructor: (id) ->
     canvas = document.getElementById(id)
@@ -8,8 +10,7 @@ class @ParaboliodAnimation
     @ctx = canvas.getContext('2d')
     @bounds = new Point(canvas.width, canvas.height)
 
-    @tX = @bounds.x / 2
-    @tY = @bounds.y / 2
+    @origin = new Point(@bounds.x / 2, @bounds.y / 2)
 
     @points = []
     for y in [0..canvas.height] by 50
@@ -21,32 +22,37 @@ class @ParaboliodAnimation
       offset = $(this).offset()
       x = e.pageX - offset.left
       y = e.pageY - offset.top
-      requestAnimationFrame( ->
-        self.translateOrigin(new Point(x, y))
-        self.draw()
-      )
+      self.moveOrigin(self.origin, new Point(x, y), new Date().getTime(), 300)
+    )
+    $('#' + id).mouseleave((e) =>
+      @moveOrigin(@origin, new Point(@bounds.x / 2, @bounds.y / 2), new Date().getTime(), 300)
     )
 
   scaledRadius: (x, y, radius) ->
-      radius * (-1.5 * (sqr(1.5 * (x - @tX) / @bounds.x) + sqr(1.5 * (y - @tY) / @bounds.y)) + 1)
+      radius * (-1.5 * (sqr(1.5 * (x - @origin.x) / @bounds.x) + sqr(1.5 * (y - @origin.y) / @bounds.y)) + 1)
+
+  moveOrigin: (startPoint, endPoint, startTime, duration) ->
+    t = new Date().getTime() - startTime
+    return if t >= duration
+    t /= duration
+    t = Easing.easeInOutCubic(t)
+    @origin.x = startPoint.x + t * (endPoint.x - startPoint.x )
+    @origin.y = startPoint.y + t * (endPoint.y - startPoint.y )
+    requestAnimationFrame(() =>
+      @moveOrigin(startPoint, endPoint, startTime, duration)
+      @draw()
+    )
 
   draw: () ->
     @ctx.clearRect(0, 0, @bounds.x, @bounds.y)
     for point in @points
       @ctx.fillStyle = point.color
-      @ctx.lineWidth = 3
-      @ctx.strokeStyle = '#FFFFFF'
       @ctx.beginPath()
       @ctx.moveTo(point.x, point.y)
       r = @scaledRadius(point.x, point.y, 25)
       r = 0 if r < 0
       @ctx.arc(point.x, point.y, r, 0, 2 * Math.PI)
-      # @ctx.stroke()
       @ctx.fill()
-
-  translateOrigin: (point) ->
-    @tX = point.x
-    @tY = point.y
 
   sqr= (num) ->
     num * num
