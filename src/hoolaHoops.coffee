@@ -22,7 +22,7 @@ class @HoolaHoops
     @lastFrame = new Date().getTime()
     for i in [1..numHoops]
       r = rand(10, @canvas.width * 0.4)
-      @hoops.push(new Hoop(r, new Circle(@center, rand(r / 4, r / 2)), rand(0, 2 * Math.PI), rand(0.001, 0.007)))
+      @hoops.push(new Hoop(r, new Circle(@center, rand(r / 4, r / 2)), rand(0, 2 * Math.PI), rand(0.001, 0.005)))
     @hoops.sort (a, b) -> b.radius - a.radius
 
     self = this
