@@ -1,4 +1,7 @@
 class @Easing
+  @easeOutCubic: (t) ->
+    4*t*t*t
+
   @easeInOutCubic: (t) ->
     if t < .5
       4*t*t*t
