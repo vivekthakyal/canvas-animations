@@ -12,7 +12,7 @@ class @Hoop
     @x = @innerCircle.radius * Math.cos(@angle) + @innerCircle.center.x
     @y = @innerCircle.radius * Math.sin(@angle) + @innerCircle.center.y
 
-class @HoolaHoops
+class @HulaHoops
   constructor: (id, numHoops) ->
     @canvas = document.getElementById(id)
     @canvas.width = @canvas.height = @canvas.clientWidth
