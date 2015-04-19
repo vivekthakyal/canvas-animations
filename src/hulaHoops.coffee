@@ -15,7 +15,8 @@ class @Hoop
 class @HulaHoops
   constructor: (id, numHoops) ->
     @canvas = document.getElementById(id)
-    @canvas.width = @canvas.height = @canvas.clientWidth
+    @canvas.width = @canvas.clientWidth
+    @canvas.height = @canvas.clientHeight
     @ctx = @canvas.getContext('2d')
     @center = new Point(@canvas.width / 2, @canvas.height / 2)
     @hoops = []
@@ -52,7 +53,7 @@ class @HulaHoops
     dt = now - @lastFrame
     hoop.updateCenter(dt) for hoop in @hoops
     @lastFrame = now
-    @ctx.clearRect(0, 0, 300, 300)
+    @ctx.clearRect(0, 0, @canvas.width, @canvas.height)
     @ctx.lineWidth = 10
     for hoop in @hoops
       @ctx.moveTo(hoop.x, hoop.y)

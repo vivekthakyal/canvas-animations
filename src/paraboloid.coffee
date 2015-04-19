@@ -6,7 +6,8 @@ class @Point
 class @ParaboliodAnimation
   constructor: (id) ->
     canvas = document.getElementById(id)
-    canvas.width = canvas.height = canvas.clientWidth
+    canvas.width = canvas.clientWidth
+    canvas.height = canvas.clientWidth
     @ctx = canvas.getContext('2d')
     @bounds = new Point(canvas.width, canvas.height)
 
@@ -29,7 +30,8 @@ class @ParaboliodAnimation
     )
 
   scaledRadius: (x, y, radius) ->
-      radius * (-1.5 * (sqr(1.5 * (x - @origin.x) / @bounds.x) + sqr(1.5 * (y - @origin.y) / @bounds.y)) + 1)
+    denom = Math.min(@bounds.x, @bounds.y)
+    radius * (-1.5 * (sqr(1.5 * (x - @origin.x) / denom) + sqr(1.5 * (y - @origin.y) / denom)) + 1)
 
   moveOrigin: (startPoint, endPoint, startTime, duration) ->
     t = new Date().getTime() - startTime

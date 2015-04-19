@@ -6,7 +6,7 @@ class @Bubble
 
   merge: (that) ->
     if this.r < that.r
-      that.merge(this)
+      return that.merge(this)
     else
       newArea = this.area() + that.area()
       newR = Math.sqrt(newArea / Math.PI)
@@ -24,7 +24,7 @@ class @Bubble
     @r / 20 * Bubble.MAX_V
 
   grow: (now) ->
-    if not @rising
+    if not @rising and @r <= Bubble.MAX_R
       @r += Bubble.GROWTH_RATE * (now - @createdAt)
 
   move: (now) ->
@@ -40,8 +40,18 @@ class @Bubble
 class @RisingBubbles
   constructor: (id, @maxBubbles) ->
     @canvas = document.getElementById(id)
-    $('#' + id).css('background-color', 'red')
-    @canvas.width = @canvas.height = @canvas.clientWidth
+    elem = $('#' + id)
+    elem.css('background-color', 'red')
+    elem.click( =>
+      ts = new Date().getTime()
+      for b in @bubbles
+        if not b.rising
+          b.rising = true
+          b.startedRisingAt = ts
+    )
+
+    @canvas.width = @canvas.clientWidth
+    @canvas.height = @canvas.clientHeight
     @ctx = @canvas.getContext('2d')
     @ctx.fillStyle = '#FFFFFF'
     @bubbles = []
@@ -54,7 +64,7 @@ class @RisingBubbles
 
   run: (now) ->
     @update(now)
-    @ctx.clearRect(0, 0, 300, 300)
+    @ctx.clearRect(0, 0, @canvas.width, @canvas.height)
     for bubble in @bubbles
       @ctx.moveTo(bubble.x, bubble.y)
       @ctx.beginPath()
